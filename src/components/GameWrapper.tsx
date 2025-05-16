@@ -1,5 +1,6 @@
 import { useEffect, useState, createContext, useContext } from "react";
 import "./GameWrapper.css";
+import KeyDisplay from "./KeyDisplay";
 
 // Define the key state interface - arrow keys and space
 interface KeyState {
@@ -15,19 +16,19 @@ const KeyContext = createContext<KeyState | null>(null);
 
 // Mapping from WASD to arrow keys
 const keyMap: Record<string, keyof KeyState | undefined> = {
-  "w": "ArrowUp",
-  "W": "ArrowUp",
-  "a": "ArrowLeft",
-  "A": "ArrowLeft",
-  "s": "ArrowDown",
-  "S": "ArrowDown",
-  "d": "ArrowRight",
-  "D": "ArrowRight",
-  "ArrowUp": "ArrowUp",
-  "ArrowDown": "ArrowDown",
-  "ArrowLeft": "ArrowLeft",
-  "ArrowRight": "ArrowRight",
-  " ": "Space"
+  w: "ArrowUp",
+  W: "ArrowUp",
+  a: "ArrowLeft",
+  A: "ArrowLeft",
+  s: "ArrowDown",
+  S: "ArrowDown",
+  d: "ArrowRight",
+  D: "ArrowRight",
+  ArrowUp: "ArrowUp",
+  ArrowDown: "ArrowDown",
+  ArrowLeft: "ArrowLeft",
+  ArrowRight: "ArrowRight",
+  " ": "Space",
 };
 
 // Hook to use the key state from any component
@@ -46,7 +47,7 @@ function GameWrapper({ children }: { children: React.ReactNode }) {
     ArrowDown: false,
     ArrowLeft: false,
     ArrowRight: false,
-    Space: false
+    Space: false,
   });
 
   useEffect(() => {
@@ -54,11 +55,11 @@ function GameWrapper({ children }: { children: React.ReactNode }) {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Map the key to its equivalent if exists
       const mappedKey = keyMap[e.key];
-      
+
       if (mappedKey) {
         // Prevent default behavior for tracked keys
         e.preventDefault();
-        
+
         // Update state for the pressed key
         setKeyState((prev) => ({
           ...prev,
@@ -70,11 +71,11 @@ function GameWrapper({ children }: { children: React.ReactNode }) {
     const handleKeyUp = (e: KeyboardEvent) => {
       // Map the key to its equivalent if exists
       const mappedKey = keyMap[e.key];
-      
+
       if (mappedKey) {
         // Prevent default behavior for tracked keys
         e.preventDefault();
-        
+
         // Update state for the released key
         setKeyState((prev) => ({
           ...prev,
@@ -97,6 +98,7 @@ function GameWrapper({ children }: { children: React.ReactNode }) {
   return (
     <KeyContext.Provider value={keyState}>
       <div className="game-wrapper">{children}</div>
+      <KeyDisplay />
     </KeyContext.Provider>
   );
 }
